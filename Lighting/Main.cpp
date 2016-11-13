@@ -9,8 +9,8 @@ using namespace std;
 
 // init callback
 void myInit(void) {
-	glClearColor(1.0, 1.0, 1.0, 1.0);	// background color: black
-	glColor3f(0.0f, 0.0f, 0.0f);		// drawing color: white
+	glClearColor(0.0, 0.0, 0.0, 0.0);	// background color: black
+	glColor3f(1.0f, 1.0f, 1.0f);		// drawing color: white
 	glLineWidth(2.0);					// a line is 5 pixels wide
 
 	glMatrixMode(GL_PROJECTION);		// set matrix mode
@@ -31,6 +31,8 @@ void display() {
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+
+	plane();
 
 	glutSwapBuffers();	// draw to screen
 }
