@@ -9,13 +9,16 @@ using namespace std;
 
 // init callback
 void myInit(void) {
+	glShadeModel(GL_SMOOTH);
+	glEnable(GL_NORMALIZE);
+
 	glClearColor(0.0, 0.0, 0.0, 0.0);	// background color: black
 	glColor3f(1.0f, 1.0f, 0.0f);		// drawing color: white
 	glLineWidth(2.0);					// a line is 5 pixels wide
 
 	glMatrixMode(GL_PROJECTION);		// set matrix mode
 	glLoadIdentity();					// load identity matrix
-	glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);	// orthographic mapping
+	glOrtho(-30.0, 30.0, -30.0, 30.0, -30.0, 30.0);	// orthographic mapping
 
 												// set up ability to track object depths
 	glClearDepth(1.0f);
