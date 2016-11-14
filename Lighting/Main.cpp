@@ -7,6 +7,10 @@
 
 using namespace std;
 
+// global variables for positioning camera based on mouse movement
+GLfloat eyex, eyey, eyez;
+GLfloat vAngle, hAngle;
+
 // init callback
 void myInit(void) {
 	glShadeModel(GL_SMOOTH);
@@ -18,6 +22,7 @@ void myInit(void) {
 
 	glMatrixMode(GL_PROJECTION);		// set matrix mode
 	glLoadIdentity();					// load identity matrix
+
 	glOrtho(-30.0, 30.0, -30.0, 30.0, -30.0, 30.0);	// orthographic mapping
 
 												// set up ability to track object depths
@@ -45,16 +50,22 @@ void plane() {
 	for (x = -1; x < 1; x = x + 0.1) {
 		for (y = -1; y < 1; y = y + 0.1) {
 			glBegin(GL_POLYGON);
-			glNormal3f(0, 0, 1);
-			//glNormal3f(-x, -y, 1);
-			glVertex3f(x, y, 0);
-			glVertex3f(x + 0.1, y, 0);
-			glVertex3f(x + 0.1, y + 0.1, 0);
-			glVertex3f(x, y + 0.1, 0);
+				glNormal3f(0, 0, 1);
+				glVertex3f(x, y, -1);
+				glVertex3f(x + 0.1, y, -1);
+				glVertex3f(x + 0.1, y + 0.1, -1);
+				glVertex3f(x, y + 0.1, -1);
 			glEnd();
 		}
 	}
 
+}
+
+// calculates where camera should be positioned
+void eyeAt(GLfloat r) {
+	eyez = r * sin(vAngle) * cos(hAngle);
+	eyex = r * sin(vAngle) * sin(hAngle);
+	eyey = r * cos(vAngle);
 }
 
 // display callback
@@ -62,25 +73,31 @@ void display() {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear screen to bg color
 
+	eyeAt(5);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+	gluLookAt(eyex, eyey, eyez, 0, 0, 0, 0, 1, 0);
 
 	GLfloat light_ambient[] = { 0.5, 0.5, 0.5, 1 };
-	GLfloat light_diffuse[] = { 0.5, 0.5, 0.5, 1 };
+	GLfloat light_diffuse[] = { 1, 1, 1, 1 };
 	GLfloat light_specular[] = { .8, .8, .8, 1 };
 
 	glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
 
-	GLfloat light_position[] = { 0, 0, 2, 1 };
+	GLfloat light_position[] = { 0, 0, 0, 1 };
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-	glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 1.0);
+	//glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 1.0);
 
 	glEnable(GL_LIGHT0);
 	glEnable(GL_LIGHTING);
 
-	plane();
+
+
+		plane();
+
+
 
 	glutSwapBuffers();	// draw to screen
 }
@@ -104,6 +121,17 @@ void reshape(int w, int h) {
 
 }
 
+// mouse movement callback
+void mouse(int x, int y) {
+
+	hAngle = (360.0 / glutGet(GLUT_WINDOW_WIDTH) * (x + 1)); // 360 degrees
+	vAngle = (180.0 / glutGet(GLUT_WINDOW_HEIGHT) * (y + 1)); // 180 degrees
+	hAngle = hAngle * 0.017453;
+	vAngle = vAngle * 0.017453;
+
+	glutPostRedisplay();
+}
+
 // main method
 int main(int argc, char**argv)
 {
@@ -119,6 +147,7 @@ int main(int argc, char**argv)
 				// register callback functions
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);
+	glutMotionFunc(mouse);
 
 	glMatrixMode(GL_PROJECTION);
 
