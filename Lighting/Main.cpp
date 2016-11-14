@@ -23,7 +23,7 @@ void myInit(void) {
 	glMatrixMode(GL_PROJECTION);		// set matrix mode
 	glLoadIdentity();					// load identity matrix
 
-	glOrtho(-30.0, 30.0, -30.0, 30.0, -30.0, 30.0);	// orthographic mapping
+	glOrtho(-50.0, 50.0, -50.0, 50.0, -50.0, 50.0);	// orthographic mapping
 
 												// set up ability to track object depths
 	glClearDepth(1.0f);
@@ -44,17 +44,17 @@ void plane() {
 	glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
 
-	GLfloat mat_shininess = { 10.0 };
+	GLfloat mat_shininess = { .5 };
 	glMaterialf(GL_FRONT, GL_SHININESS, mat_shininess);
 
 	for (x = -1; x < 1; x = x + 0.1) {
 		for (y = -1; y < 1; y = y + 0.1) {
 			glBegin(GL_POLYGON);
-				glNormal3f(0, 0, 1);
-				glVertex3f(x, y, -1);
-				glVertex3f(x + 0.1, y, -1);
-				glVertex3f(x + 0.1, y + 0.1, -1);
-				glVertex3f(x, y + 0.1, -1);
+				glNormal3f(0, 0, -1);
+				glVertex3f(x, y, 1);
+				glVertex3f(x + 0.1, y, 1);
+				glVertex3f(x + 0.1, y + 0.1, 1);
+				glVertex3f(x, y + 0.1, 1);
 			glEnd();
 		}
 	}
@@ -73,14 +73,14 @@ void display() {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear screen to bg color
 
-	eyeAt(5);
+	eyeAt(1);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	gluLookAt(eyex, eyey, eyez, 0, 0, 0, 0, 1, 0);
 
-	GLfloat light_ambient[] = { 0.5, 0.5, 0.5, 1 };
-	GLfloat light_diffuse[] = { 1, 1, 1, 1 };
-	GLfloat light_specular[] = { .8, .8, .8, 1 };
+	GLfloat light_ambient[] = { .5, .5, .5, 1 };
+	GLfloat light_diffuse[] = { .5, .5, .5, 1 };
+	GLfloat light_specular[] = { .5, .5, .5, 1 };
 
 	glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
@@ -88,14 +88,24 @@ void display() {
 
 	GLfloat light_position[] = { 0, 0, 0, 1 };
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-	//glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 1.0);
+	glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 1.0);
 
 	glEnable(GL_LIGHT0);
 	glEnable(GL_LIGHTING);
 
+	glPushMatrix();
+	glTranslatef(1.0, 1.0, 25.0);
+	glScalef(25.0, 25.0, 1);
+	plane();
+	glPopMatrix();
 
-
-		plane();
+	glPushMatrix();
+	glRotatef(90.0, 0, 1, 0);
+	glTranslatef(1.0, 1.0, 25.0);
+	glScalef(25.0, 25.0, 1);
+	plane();
+	glScalef(25.0, 25.0, 1);
+	glPopMatrix();
 
 
 
@@ -110,10 +120,10 @@ void reshape(int w, int h) {
 	glLoadIdentity();
 
 	if (w <= h) {
-		glOrtho(-3.5, 3.5, -3.0 * (GLfloat)h / (GLfloat)w, 4.0 * (GLfloat)h / (GLfloat)w, -10.0, 10.0);
+		glOrtho(-50.0, 50.0, -50.0 * (GLfloat)h / (GLfloat)w, 50.0 * (GLfloat)h / (GLfloat)w, -50.0, 50.0);
 	}
 	else {
-		glOrtho(-3.5 * (GLfloat)w / (GLfloat)h, 3.5* (GLfloat)w / (GLfloat)h, -3.0, 4.0, -10.0, 10.0);
+		glOrtho(-50.0 * (GLfloat)w / (GLfloat)h, 50.0 * (GLfloat)w / (GLfloat)h, -50.0, 50.0, -50.0, 50.0);
 	}
 
 	glMatrixMode(GL_MODELVIEW);
