@@ -23,7 +23,7 @@ void myInit(void) {
 	glMatrixMode(GL_PROJECTION);		// set matrix mode
 	glLoadIdentity();					// load identity matrix
 
-	glOrtho(-50.0, 50.0, -50.0, 50.0, -50.0, 50.0);	// orthographic mapping
+	glOrtho(-75.0, 75.0, -75.0, 75.0, -75.0, 75.0);	// orthographic mapping
 
 												// set up ability to track object depths
 	glClearDepth(1.0f);
@@ -95,8 +95,8 @@ void display() {
 	
 	glPushMatrix();
 	glNormal3f(0, 0, -1);
-	glTranslatef(1.0, 1.0, 25.0);
-	glScalef(25.0, 25.0, 1);
+	glTranslatef(1.0, 1.0, 50.0);
+	glScalef(25.0, 25.0, 0.0);
 	plane();
 	glPopMatrix();
 
@@ -148,10 +148,10 @@ void reshape(int w, int h) {
 	glLoadIdentity();
 
 	if (w <= h) {
-		glOrtho(-50.0, 50.0, -50.0 * (GLfloat)h / (GLfloat)w, 50.0 * (GLfloat)h / (GLfloat)w, -50.0, 50.0);
+		glOrtho(-75.0, 75.0, -75.0 * (GLfloat)h / (GLfloat)w, 75.0 * (GLfloat)h / (GLfloat)w, -75.0, 75.0);
 	}
 	else {
-		glOrtho(-50.0 * (GLfloat)w / (GLfloat)h, 50.0 * (GLfloat)w / (GLfloat)h, -50.0, 50.0, -50.0, 50.0);
+		glOrtho(-75.0 * (GLfloat)w / (GLfloat)h, 75.0 * (GLfloat)w / (GLfloat)h, -75.0, 75.0, -75.0, 75.0);
 	}
 
 	glMatrixMode(GL_MODELVIEW);
