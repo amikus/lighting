@@ -18,7 +18,7 @@ void myInit(void) {
 
 	glClearColor(0.0, 0.0, 0.0, 0.0);	// background color: black
 	glColor3f(1.0f, 1.0f, 0.0f);		// drawing color: white
-	glLineWidth(2.0);					// a line is 5 pixels wide
+	glLineWidth(10.0);					// a line is 5 pixels wide
 
 	glMatrixMode(GL_PROJECTION);		// set matrix mode
 	glLoadIdentity();					// load identity matrix
@@ -50,7 +50,6 @@ void plane() {
 	for (x = -1; x < 1; x = x + 0.1) {
 		for (y = -1; y < 1; y = y + 0.1) {
 			glBegin(GL_POLYGON);
-				glNormal3f(0, 0, -1);
 				glVertex3f(x, y, 1);
 				glVertex3f(x + 0.1, y, 1);
 				glVertex3f(x + 0.1, y + 0.1, 1);
@@ -93,21 +92,50 @@ void display() {
 	glEnable(GL_LIGHT0);
 	glEnable(GL_LIGHTING);
 
+	
 	glPushMatrix();
+	glNormal3f(0, 0, -1);
 	glTranslatef(1.0, 1.0, 25.0);
 	glScalef(25.0, 25.0, 1);
 	plane();
 	glPopMatrix();
 
+	
 	glPushMatrix();
+	glNormal3f(1, 0, 0);
+	glTranslatef(1.0, 1.0, 25.0);
 	glRotatef(90.0, 0, 1, 0);
 	glTranslatef(1.0, 1.0, 25.0);
 	glScalef(25.0, 25.0, 1);
 	plane();
-	glScalef(25.0, 25.0, 1);
 	glPopMatrix();
 
+	glPushMatrix();
+	glNormal3f(-1, 0, 0);
+	glTranslatef(1.0, 1.0, 25.0);
+	glRotatef(-90.0, 0, 1, 0);
+	glTranslatef(1.0, 1.0, 25.0);
+	glScalef(25.0, 25.0, 1);
+	plane();
+	glPopMatrix();
 
+	glPushMatrix();
+	glNormal3f(0, -1, 0);
+	glTranslatef(1.0, 1.0, 25.0);
+	glRotatef(90.0, 1, 0, 0);
+	glTranslatef(1.0, 1.0, 25.0);
+	glScalef(25.0, 25.0, 1);
+	plane();
+	glPopMatrix();
+
+	glPushMatrix();
+	glNormal3f(0, 1, 0);
+	glTranslatef(1.0, 1.0, 25.0);
+	glRotatef(-90.0, 1, 0, 0);
+	glTranslatef(1.0, 1.0, 25.0);
+	glScalef(25.0, 25.0, 1);
+	plane();
+	glPopMatrix();
 
 	glutSwapBuffers();	// draw to screen
 }
